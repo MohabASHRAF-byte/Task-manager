@@ -37,12 +37,8 @@ export class TasksController {
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
-    @Body('status') status: TaskStatus,
+    @Body() status: UpdateTaskStatus,
   ): Task | undefined {
-    const udpateDto: UpdateTaskStatus = {
-      id,
-      status,
-    };
-    return this.taskService.UpdateTaskStatus(udpateDto);
+    return this.taskService.UpdateTaskStatus(id, status);
   }
 }
