@@ -1,8 +1,16 @@
-import { Body, Controller, Param, Post, Delete, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  Delete,
+  Query,
+  Put,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Get } from '@nestjs/common';
 import { CreateTask } from './Dtos/create-task.dto';
-// import { UpdateTaskStatus } from './Dtos/update-task.dto';
+import { UpdateTaskStatus } from './Dtos/update-task.dto';
 import { TasksFilterDto } from './Dtos/get-tasks-filter';
 import { Task } from './tasks.entity';
 @Controller('tasks')
@@ -23,5 +31,12 @@ export class TasksController {
   @Get()
   async getTasks(@Query() filter: TasksFilterDto): Promise<Task[]> {
     return await this.taskService.GetTasks(filter);
+  }
+  @Put('/:id/status')
+  async updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatus: UpdateTaskStatus,
+  ): Promise<Task> {
+    return await this.taskService.UpdateTaskStatus(id, updateTaskStatus.status);
   }
 }
