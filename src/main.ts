@@ -7,12 +7,19 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
-  // Enable Swagger
+  // ✅ Define Bearer Authentication Scheme
   const config = new DocumentBuilder()
     .setTitle('My API')
     .setDescription('API Documentation')
     .setVersion('1.0')
-    .addBearerAuth() // Add JWT Authentication if needed
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
